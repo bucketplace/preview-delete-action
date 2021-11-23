@@ -17,14 +17,21 @@ function getAuthToken(): string {
   return token
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getErrorMsg(obj: any): string {
+  return obj.detail || JSON.stringify(obj, null, 2)
+}
+
 export async function deletePreview(
   application: string,
   branch: string
 ): Promise<void> {
   const res = await fetch(
-    `${getBaseUrl()}/applications/${application}/preview?${new URLSearchParams({
-      branch
-    })}`,
+    `${getBaseUrl()}/api/v1/applications/${application}/preview/?${new URLSearchParams(
+      {
+        branch
+      }
+    )}`,
     {
       method: 'DELETE',
       headers: {
@@ -34,5 +41,5 @@ export async function deletePreview(
     }
   )
 
-  if (res.status !== 200) throw Error((await res.json())?.message)
+  if (res.status !== 200) throw Error(getErrorMsg(await res.json()))
 }

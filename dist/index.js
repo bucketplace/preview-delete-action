@@ -89,10 +89,13 @@ function getAuthToken() {
         throw ReferenceError('There is no token defined in the environment variables');
     return token;
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getErrorMsg(obj) {
+    return obj.detail || JSON.stringify(obj, null, 2);
+}
 function deletePreview(application, branch) {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
-        const res = yield node_fetch_1.default(`${getBaseUrl()}/applications/${application}/preview?${new URLSearchParams({
+        const res = yield node_fetch_1.default(`${getBaseUrl()}/api/v1/applications/${application}/preview/?${new URLSearchParams({
             branch
         })}`, {
             method: 'DELETE',
@@ -102,7 +105,7 @@ function deletePreview(application, branch) {
             }
         });
         if (res.status !== 200)
-            throw Error((_a = (yield res.json())) === null || _a === void 0 ? void 0 : _a.message);
+            throw Error(getErrorMsg(yield res.json()));
     });
 }
 exports.deletePreview = deletePreview;
