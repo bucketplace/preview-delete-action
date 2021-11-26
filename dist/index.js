@@ -104,7 +104,7 @@ function deletePreview(application, branch) {
                 Authorization: `Token ${getAuthToken()}`
             }
         });
-        if (res.status !== 200)
+        if (res.status !== 204)
             throw Error(getErrorMsg(yield res.json()));
     });
 }

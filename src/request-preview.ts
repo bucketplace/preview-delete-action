@@ -41,5 +41,5 @@ export async function deletePreview(
     }
   )
 
-  if (res.status !== 200) throw Error(getErrorMsg(await res.json()))
+  if (res.status !== 204) throw Error(getErrorMsg(await res.json()))
 }
