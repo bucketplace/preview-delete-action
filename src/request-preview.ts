@@ -24,12 +24,14 @@ function getErrorMsg(obj: any): string {
 
 export async function deletePreview(
   application: string,
-  branch: string
+  branch: string,
+  releaseNameLength: string
 ): Promise<void> {
   const res = await fetch(
     `${getBaseUrl()}/api/v1/applications/${application}/preview/?${new URLSearchParams(
       {
-        branch
+        branch,
+        release_name_length: releaseNameLength
       }
     )}`,
     {
