@@ -7,7 +7,12 @@ async function run(): Promise<void> {
     const branch: string = core.getInput('branch', {required: true})
     const releaseNameLength: string = core.getInput('release-name-length')
 
-    await deletePreview(application, branch, releaseNameLength)
+    const queryParams: Record<string, string> = {
+      branch
+    }
+    releaseNameLength && (queryParams.release_name_length = releaseNameLength)
+
+    await deletePreview(application, queryParams)
   } catch (error) {
     core.setFailed(error.message)
   }

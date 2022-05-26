@@ -44,7 +44,11 @@ function run() {
             const application = core.getInput('application', { required: true });
             const branch = core.getInput('branch', { required: true });
             const releaseNameLength = core.getInput('release-name-length');
-            yield request_preview_1.deletePreview(application, branch, releaseNameLength);
+            const queryParams = {
+                branch
+            };
+            releaseNameLength && (queryParams.release_name_length = releaseNameLength);
+            yield request_preview_1.deletePreview(application, queryParams);
         }
         catch (error) {
             core.setFailed(error.message);
@@ -94,12 +98,9 @@ function getAuthToken() {
 function getErrorMsg(obj) {
     return obj.detail || JSON.stringify(obj, null, 2);
 }
-function deletePreview(application, branch, releaseNameLength) {
+function deletePreview(application, queryParams) {
     return __awaiter(this, void 0, void 0, function* () {
-        const res = yield node_fetch_1.default(`${getBaseUrl()}/api/v1/applications/${application}/preview/?${new URLSearchParams({
-            branch,
-            release_name_length: releaseNameLength
-        })}`, {
+        const res = yield node_fetch_1.default(`${getBaseUrl()}/api/v1/applications/${application}/preview/?${new URLSearchParams(queryParams)}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
